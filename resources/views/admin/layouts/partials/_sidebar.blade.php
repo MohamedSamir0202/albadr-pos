@@ -77,13 +77,28 @@
                 </li>
 
                 <li class="nav-item">
-                    <a href="{{ route('admin.sales.create') }}"
+                    <a href="{{ route('admin.sales.index') }}"
                     class="nav-link {{ request()->routeIs('admin.sales.*') ? 'active' : '' }}">
                         <i class="nav-icon fas fa-shopping-cart"></i>
                         <p>Sales</p>
                     </a>
                 </li>
 
+                <li class="nav-item">
+                    <a href="{{ route('admin.warehouses.index') }}"
+                    class="nav-link {{ request()->routeIs('admin.warehouses.*') ? 'active' : '' }}">
+                        <i class="nav-icon fas fa-warehouse"></i>
+                        <p>Warehouses</p>
+                    </a>
+                </li>
+
+                <li class="nav-item">
+                    <a href="{{ route('admin.safes.index') }}"
+                    class="nav-link {{ request()->routeIs('admin.safes.*') ? 'active' : '' }}">
+                        <i class="nav-icon fas fa-safes"></i>
+                        <p>Safe</p>
+                    </a>
+                </li>
 
             </ul>
         </nav>

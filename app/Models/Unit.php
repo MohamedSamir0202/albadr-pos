@@ -4,16 +4,24 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Unit extends Model 
+class Unit extends Model
 {
 
     protected $table = 'units';
     public $timestamps = true;
     protected $fillable = array('name', 'status');
 
+
+
     public function items()
     {
         return $this->hasMany('App\Models\Item');
+    }
+
+    public function image()
+    {
+        return $this->morphOne('App\Models\File', 'fileable')->
+        where('usage','unit_photo');
     }
 
 }

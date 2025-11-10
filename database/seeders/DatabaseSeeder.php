@@ -27,6 +27,7 @@ class DatabaseSeeder extends Seeder
             CategoriesSeeder::class,
             ItemsSeeder::class,
             SafesSeeder::class,
+            WarehouseSeeder::class,
         ]);
     }
 }

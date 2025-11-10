@@ -2,39 +2,36 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Item extends Model
 {
+    use HasFactory, SoftDeletes;
 
     protected $table = 'items';
     public $timestamps = true;
 
-    use SoftDeletes;
-    use HasFactory;
-
     protected $dates = ['deleted_at'];
+
     protected $fillable = [
-    'name',
-    'item_code',
-    'description',
-    'price',
-    'quantity',
-    'minimum_stock',
-    'is_shown_in_store',
-    'unit_id',
-    'category_id',
-    'status',          
-];
+        'name',
+        'item_code',
+        'description',
+        'price',
+        'quantity',
+        'is_shown_in_store',
+        'minimum_stock',
+        'status',
+        'category_id',
+        'unit_id',
+    ];
 
     public function unit()
     {
         return $this->belongsTo('App\Models\Unit');
     }
-
-
 
     public function category()
     {
@@ -43,12 +40,12 @@ class Item extends Model
 
     public function mainPhoto()
     {
-        return $this->morphOne('App\Models\File', 'filable')->where('usage','item_photo');
+        return $this->morphOne('App\Models\File', 'fileable')->where('usage', 'item_photo');
     }
 
     public function gallery()
     {
-        return $this->morphMany('App\Models\File', 'fileable')->where('usage','item_galeery');
+        return $this->morphMany('App\Models\File', 'fileable')->where('usage', 'item_gallery');
     }
 
     public function sales()
@@ -63,7 +60,29 @@ class Item extends Model
 
     public function orders()
     {
-        return $this->belongsToMany('App\Models\Order', 'item_orders')->withPivot('unit_price','quantity','total_price');
+        return $this->belongsToMany('App\Models\Order', 'item_orders')
+            ->withPivot('unit_price', 'quantity', 'total_price');
     }
 
+    public function stocks()
+    {
+        return $this->hasMany(Stock::class);
+    }
+
+    public function image()
+    {
+        return $this->morphOne('App\Models\File', 'fileable')
+            ->where('usage', 'item_photo');
+    }
+
+    public function warehouses()
+    {
+        return $this->morphedByMany('App\Models\Warehouse', 'itemable')
+            ->withPivot('quantity');
+    }
+
+    public function warehouseTransactions()
+    {
+        return $this->hasMany('App\Models\WarehouseTransaction');
+    }
 }

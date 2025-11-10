@@ -16,22 +16,27 @@ class ItemRequest extends FormRequest
 
     /**
      * Get the validation rules that apply to the request.
-     *
-     * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array<mixed>|string>
      */
     public function rules(): array
     {
+        $itemId = $this->route('item');
+        $isUpdating = !is_null($itemId);
+        $requiredOrNullable = $isUpdating ? 'nullable' : 'required';
+
         return [
-        'name' => 'required|string|max:255',
-        'item_code' => 'required|string|max:25',
-        'description' => 'required|string|max:255',
-        'price' => 'required|numeric',
-        'quantity' => 'required|numeric',
-        'is_shown_in_store' => 'required|boolean',
-        'unit_id' => 'required|exists:units,id',
-        'category_id' => 'required|exists:categories,id',
-        'minimum_stock' => 'required|integer',
-        'status' => 'required|in:1,2',
-    ];
+            'name' => 'required|string|unique:items,name,' . $itemId,
+            'item_code' => 'nullable|string|unique:items,item_code,' . $itemId,
+            'description' => 'nullable|string',
+            'price' => 'required|numeric|min:0|max:99999999.99',
+            'quantity' => $requiredOrNullable . '|numeric|min:0|max:999999.99',
+            'category_id' => 'required|integer|exists:categories,id',
+            'unit_id' => 'required|integer|exists:units,id',
+            'is_shown_in_store' => 'required|in:0,1',
+            'minimum_stock' => 'required|numeric|min:0|max:999999.99',
+            'photo' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'gallery' => 'nullable|array|max:5',
+            'gallery.*' => 'image|mimes:jpeg,png,jpg,gif,webp|max:2048',
+            'warehouse_id' => $requiredOrNullable . '|integer|exists:warehouses,id',
+        ];
     }
 }

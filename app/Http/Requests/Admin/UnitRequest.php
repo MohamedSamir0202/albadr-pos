@@ -1,7 +1,7 @@
 <?php
 
 namespace App\Http\Requests\Admin;
-
+use App\Enums\UnitStatusEnum;
 use Illuminate\Foundation\Http\FormRequest;
 
 class UnitRequest extends FormRequest
@@ -11,7 +11,7 @@ class UnitRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return true;
+        return false;
     }
 
     /**
@@ -21,9 +21,11 @@ class UnitRequest extends FormRequest
      */
     public function rules(): array
     {
+        $UnitStatusEnum = UnitStatusEnum::class;
         return [
-            'name' => 'required|string|max:255',
-            'status' => 'required|in:1,2',
+            'name' => 'required|string|max:255|unique:units,name,' . $this->route('unit'),
+            'status' => 'required|integer', 
         ];
     }
 }
+

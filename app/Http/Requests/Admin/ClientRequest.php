@@ -22,12 +22,11 @@ class ClientRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => 'required|string|max:255',
-            'email' => 'required|email|max:255|unique:clients,email,' . $this->id,
-            'phone' => 'required|string|max:255',
+            'name' => 'required|string|max:255,' .$this->route('client'),
             'address' => 'required|string|max:255',
-            'status' => 'required|in:1,2',
-            'balance' => 'nullable|numeric|min:0',
+            'phone' => 'required|string|max:255',
+            'email' => 'required|string|email|max:255|unique:clients,email,' . $this->route('client'),
+            'status' => 'required|integer',
         ];
     }
 }

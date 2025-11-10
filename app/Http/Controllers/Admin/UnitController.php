@@ -6,6 +6,7 @@ use App\Models\Unit;
 use Illuminate\Http\Request;
 use App\Enums\UnitStatusEnum;
 use App\Enums\UserStatusEnum;
+use App\Services\FileService;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\UnitRequest;
 
@@ -34,7 +35,10 @@ class UnitController extends Controller
      */
     public function store(UnitRequest $request)
     {
-        Unit::create($request->validated());
+        $unit = Unit::create($request->validated());
+        FileService::upload($request, 'image', $unit,
+         'unit_photo', 'units');
+
         session()->flash('success', 'Unit created successfully.');
         return redirect()->route('admin.units.index');
     }

@@ -9,11 +9,18 @@ class Sale extends Model
 
     protected $table = 'sales';
     public $timestamps = true;
-    protected $fillable = array('total', 'discount', 'discount_type', 'shipping_cost', 'net_amount', 'paid_amount', 'remaining_amount', 'invoice_number', 'payment_type');
+    protected $fillable = array(
+        'total', 'discount', 'discount_type', 'shipping_cost', 'net_amount', 'paid_amount', 'remaining_amount',
+        'invoice_number', 'payment_type', 'client_id', 'safe_id', 'warehouse_id', 'user_id');
 
     public function safeTransactions()
     {
         return $this->morphMany('App\Models\SafeTransaction', 'reference');
+    }
+
+    public function clientAccountTransaction()
+    {
+        return $this->morphMany('App\Models\ClientAccountTransaction', 'reference');
     }
 
     public function client()
@@ -31,9 +38,15 @@ class Sale extends Model
         return $this->belongsTo('App\Models\User');
     }
 
+    public function warehouse()
+    {
+        return $this->belongsTo('App\Models\Warehouse');
+    }
+
     public function items()
     {
-        return $this->morphToMany('App\Models\Item', 'itemable')->withPivot('unit_price','quantity','total_price');
+        return $this->morphToMany('App\Models\Item', 'itemable')
+            ->withPivot('unit_price','quantity','total_price','notes');
     }
 
 }

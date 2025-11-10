@@ -35,7 +35,8 @@
                     <td>
                         <span
                          class="badge {{ $category->status == \App\Enums\CategoryStatusEnum::active->value ? 'bg-success' : 'bg-secondary' }}">
-                         {{ \App\Enums\CategoryStatusEnum::labels()[$category->status] ?? 'Unknown' }}
+                         {{ \App\Enums\CategoryStatusEnum::labels()[$category->status->value] ?? 'Unknown' }}
+
                         </span>
                     </td>
 

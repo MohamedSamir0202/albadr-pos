@@ -15,7 +15,7 @@ class ClientController extends Controller
      */
     public function index()
     {
-        $clients = Client::all();
+        $clients = Client::paginate(10);
         return view('admin.clients.index', compact('clients'));
     }
 
@@ -41,6 +41,35 @@ class ClientController extends Controller
     /**
      * Display the specified resource.
      */
+
+    public function show(Request $request, $id)
+    {
+        $client = Client::findOrFail($id);
+        $accountService = new \App\Services\ClientAccountService();
+
+        $transactions = $accountService->getTransactions($client, [
+            'from_date' => $request->from_date,
+            'to_date' => $request->to_date,
+        ]);
+
+        $totals = $accountService->calculateTotals($transactions);
+
+        return view('admin.clients.show', compact('client', 'transactions', 'totals'));
+    }
+
+
+
+    public function search(Request $request)
+    {
+        $query = $request->input('query');
+
+        $clients = Client::where('name', 'like', "%{$query}%")
+            ->orWhere('email', 'like', "%{$query}%")
+            ->orWhere('phone', 'like', "%{$query}%")
+            ->paginate(10);
+
+        return view('admin.clients.index', compact('clients', 'query'));
+    }
 
     /**
      * Show the form for editing the specified resource.

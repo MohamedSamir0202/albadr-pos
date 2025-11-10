@@ -62,7 +62,7 @@
                                 </td>
                                 <td>
                                     <a href="{{ route('admin.items.edit', $item->id) }}" class="btn btn-sm btn-warning"><i class="fas fa-edit"></i></a>
-                                    
+
                                     <form action="{{ route('admin.items.destroy', $item->id) }}" method="POST" class="d-inline-block">
                                         @csrf
                                         @method('DELETE')
@@ -78,7 +78,11 @@
                         </tbody>
                     </table>
                 </div>
+
                 <!-- /.card-body -->
+                <div class="card-footer clearfix">
+                    {{ $items->links() }}
+                </div>
             </div>
             <!-- /.card -->
         </div>
