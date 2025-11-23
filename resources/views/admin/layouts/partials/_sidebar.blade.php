@@ -95,13 +95,45 @@
                 <li class="nav-item">
                     <a href="{{ route('admin.safes.index') }}"
                     class="nav-link {{ request()->routeIs('admin.safes.*') ? 'active' : '' }}">
-                        <i class="nav-icon fas fa-safes"></i>
+                        <i class="nav-icon fas fa-money-bill"></i>
                         <p>Safe</p>
                     </a>
                 </li>
 
+                <li class="nav-item">
+                    <a href="{{ route('admin.settings.general.view') }}"
+                    class="nav-link {{ request()->routeIs('admin.settings.general.*') ? 'active' : '' }}">
+                        <i class="nav-icon fas fa-cog"></i>
+                        <p>Settings</p>
+                    </a>
+                </li>
+
+                <li class="nav-item">
+                    <a href="{{ route('admin.settings.advanced.view') }}"
+                    class="nav-link {{ request()->routeIs('admin.settings.advanced.*') ? 'active' : '' }}">
+                        <i class="nav-icon fas fa-tools"></i>
+                        <p>Advanced Settings</p>
+                    </a>
+                </li>
+
+                <li class="nav-item">
+                    <a href="{{ route('admin.roles.index') }}"
+                    class="nav-link {{ request()->routeIs('admin.roles.*') ? 'active' : '' }}">
+                        <i class="nav-icon fas fa-user-cog"></i>
+                        <p>Roles</p>
+                    </a>
+                </li>
+
+                <li class="nav-item">
+                    <a href="{{ route('admin.permissions.index') }}"
+                    class="nav-link {{ request()->routeIs('admin.permissions.*') ? 'active' : '' }}">
+                        <i class="nav-icon fas fa-key"></i>
+                        <p>Permissions</p>
+                    </a>
+                </li>
             </ul>
         </nav>
+
         <!-- /.sidebar-menu -->
     </div>
     <!-- /.sidebar -->

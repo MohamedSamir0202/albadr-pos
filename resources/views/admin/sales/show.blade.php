@@ -86,6 +86,57 @@
             <div class="mt-3 text-center text-muted small">
                 Printed at: {{ now()->format('Y-m-d H:i') }}
             </div>
+
+           {{-- Pay Remaining Button (only if deferred payment) --}}
+            @if($sale->remaining_amount > 0
+                && $sale->payment_type == \App\Enums\PaymentTypeEnum::debt->value
+                && in_array('deferred', app(\App\Settings\AdvancedSettings::class)->payment_methods)
+            )
+                <div class="text-end mt-3">
+                    <button class="btn btn-success btn-sm" data-bs-toggle="modal" data-bs-target="#payRemainingModal">
+                        Pay Remaining ({{ number_format($sale->remaining_amount, 2) }} EGP)
+                    </button>
+                </div>
+            @endif
+
+
+            {{-- Modal --}}
+            <div class="modal fade" id="payRemainingModal" tabindex="-1">
+                <div class="modal-dialog">
+                    <form method="POST" action="{{ route('admin.sales.payRemaining', $sale->id) }}">
+                        @csrf
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title">Pay Remaining Amount</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                            </div>
+
+                            <div class="modal-body">
+                                <p>
+                                    <strong>Remaining:</strong>
+                                    {{ number_format($sale->remaining_amount, 2) }} EGP
+                                </p>
+
+                                <div class="form-group">
+                                    <label>Payment Amount</label>
+                                    <input type="number" step="0.01" name="amount" class="form-control" required>
+                                </div>
+
+                                <div class="form-group mt-2">
+                                    <label>Description (optional)</label>
+                                    <input type="text" name="description" class="form-control" placeholder="Optional note">
+                                </div>
+                            </div>
+
+                            <div class="modal-footer">
+                                <button class="btn btn-primary">Confirm Payment</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+
         </div>
     </div>
 

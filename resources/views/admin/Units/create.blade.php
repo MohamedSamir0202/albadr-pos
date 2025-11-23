@@ -1,5 +1,5 @@
 @extends('admin.layouts.app', [
-    'pageName' => 'Users',
+    'pageName' => 'Units',
 ])
 
 @section('content')
