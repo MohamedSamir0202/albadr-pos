@@ -28,13 +28,13 @@ class PermissionController extends Controller
         Permission::create(['name' => $request->name]);
 
         return redirect()->route('admin.permissions.index')
-            ->with('success', 'Permission created successfully.');
+        ->with('success', 'Permission created successfully.');
     }
 
     public function destroy(Permission $permission)
     {
         $permission->delete();
         return redirect()->route('admin.permissions.index')
-            ->with('success', 'Permission deleted successfully.');
+        ->with('success', 'Permission deleted successfully.');
     }
 }

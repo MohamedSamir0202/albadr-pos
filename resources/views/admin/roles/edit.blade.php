@@ -1,49 +1,35 @@
-@extends('admin.layouts.app', ['pageName' => 'Edit Role'])
+@extends('layouts.admin')
+
+@section('title', 'تعديل دور')
+@section('page-title', 'تعديل الدور')
 
 @section('content')
-<div class="card">
-    <div class="card-header">
-        <h3 class="card-title">Edit Role: {{ $role->name }}</h3>
-    </div>
-
-    <form action="{{ route('admin.roles.update', $role->id) }}" method="POST">
+<div class="content-card p-6">
+    <form method="POST" action="{{ route('admin.roles.update', $role) }}">
         @csrf
         @method('PUT')
-        <div class="card-body">
-            <div class="form-group mb-3">
-                <label for="name">Role Name</label>
-                <input type="text" name="name" id="name"
-                       class="form-control @error('name') is-invalid @enderror"
-                       placeholder="Enter role name" value="{{ old('name', $role->name) }}">
-                @error('name')
-                    <span class="invalid-feedback">{{ $message }}</span>
-                @enderror
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div>
+                <label class="block text-sm font-medium mb-1">اسم الدور</label>
+                <input name="name" class="form-input w-full" value="{{ old('name', $role->name) }}" required />
+                @error('name')<p class="text-red-600 text-sm mt-1">{{ $message }}</p>@enderror
             </div>
-
-            <hr>
-
-            <div class="form-group">
-                <label>Assign Permissions</label>
-                <div class="row">
+            <div class="md:col-span-2">
+                <label class="block text-sm font-medium mb-2">الصلاحيات</label>
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-3 max-h-80 overflow-auto p-2 border rounded-lg">
                     @foreach($permissions as $permission)
-                        <div class="col-sm-3 mb-2">
-                            <div class="form-check">
-                                <input type="checkbox" name="permissions[]"
-                                       id="perm_{{ $permission->id }}"
-                                       value="{{ $permission->name }}"
-                                       class="form-check-input"
-                                       @if($role->hasPermissionTo($permission->name)) checked @endif>
-                                <label class="form-check-label" for="perm_{{ $permission->id }}">
-                                    {{ $permission->name }}
-                                </label>
-                            </div>
-                        </div>
+                    <label class="flex items-center gap-2 text-sm">
+                        <input type="checkbox" name="permissions[]" value="{{ $permission->id }}" class="rounded" {{ in_array($permission->id, $rolePermissions) ? 'checked' : '' }} />
+                        <span>{{ $permission->name }}</span>
+                    </label>
                     @endforeach
                 </div>
             </div>
         </div>
-
-        <button>Update</button>
+        <div class="mt-6 flex gap-3">
+            <button class="btn-primary">حفظ</button>
+            <a href="{{ route('admin.roles.index') }}" class="btn-secondary">إلغاء</a>
+        </div>
     </form>
 </div>
 @endsection

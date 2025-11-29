@@ -85,6 +85,14 @@
                 </li>
 
                 <li class="nav-item">
+                    <a href="{{ route('admin.returns.create') }}"
+                    class="nav-link {{ request()->routeIs('admin.returns.*') ? 'active' : '' }}">
+                        <i class="nav-icon fas fa-shopping-cart"></i>
+                        <p>Returns</p>
+                    </a>
+                </li>
+
+                <li class="nav-item">
                     <a href="{{ route('admin.warehouses.index') }}"
                     class="nav-link {{ request()->routeIs('admin.warehouses.*') ? 'active' : '' }}">
                         <i class="nav-icon fas fa-warehouse"></i>

@@ -1,7 +1,6 @@
 <?php
 
 
-use App\Models\Unit;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
@@ -11,8 +10,8 @@ use App\Http\Controllers\Admin\SafeController;
 use App\Http\Controllers\Admin\SaleController;
 use App\Http\Controllers\Admin\UnitController;
 use App\Http\Controllers\Admin\UserController;
-use App\Http\Controllers\Admin\StockController;
 use App\Http\Controllers\Admin\ClientController;
+use App\Http\Controllers\Admin\ReturnController;
 use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\WarehouseController;
 use App\Http\Controllers\Admin\PermissionController;
@@ -21,15 +20,13 @@ use App\Http\Controllers\Admin\WarehouseTransactionController;
 use App\Http\Controllers\Admin\Settings\GeneralSettingsController;
 use App\Http\Controllers\Admin\Settings\AdvancedSettingsController;
 
-//
-Route::redirect('/', '/admin/home');
+Route::redirect('/', 'admin/home');
 
-//
-Auth::routes(['register' => false]);
+Route::group(['prefix' => 'admin', 'as' => 'admin.'], function () {
 
-//
-Route::prefix('admin')->name('admin.')->middleware('auth')->group(function () {
-    Route::get('/home', [HomeController::class, 'index'])->name('home');
+    Auth::routes(['register' => false]);
+
+     Route::get('/home', [HomeController::class, 'index'])->name('home');
     Route::resource('users', UserController::class);
     Route::resource('categories', CategoryController::class);
     Route::resource('units', UnitController::class);
@@ -43,6 +40,7 @@ Route::prefix('admin')->name('admin.')->middleware('auth')->group(function () {
     Route::post('sales/{id}/pay-remaining', [SaleController::class, 'payRemaining'])
     ->name('sales.payRemaining');
 
+    Route::resource('returns', ReturnController::class)->only('create', 'store');
 
     Route::resource('warehouses', WarehouseController::class);
 
