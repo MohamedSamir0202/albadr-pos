@@ -34,113 +34,156 @@
 
         <!-- Sidebar Menu -->
         <nav class="mt-2">
-            <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
+        <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
 
-                <li class="nav-item">
-                    <a href="{{ route('admin.users.index') }}"
-                    class="nav-link {{ request()->routeIs('admin.users.*') ? 'active' : '' }}">
-                        <i class="nav-icon fas fa-users"></i>
-                        <p>Users</p>
-                    </a>
-                </li>
+            <!-- Users -->
+            <li class="nav-item">
+                <a href="{{ route('admin.users.index') }}" class="nav-link {{ request()->routeIs('admin.users.*') ? 'active' : '' }}">
+                    <i class="nav-icon fas fa-users"></i>
+                    <p>Users</p>
+                </a>
+            </li>
 
-                <li class="nav-item">
-                    <a href="{{ route('admin.categories.index') }}"
-                    class="nav-link {{ request()->routeIs('admin.categories.*') ? 'active' : '' }}">
-                        <i class="nav-icon fas fa-list-alt"></i>
-                        <p>Categories</p>
-                    </a>
-                </li>
+            <!-- Products Section (Categories, Units, Items) -->
+            <li class="nav-item has-treeview {{ request()->routeIs('admin.categories.*','admin.units.*','admin.items.*') ? 'menu-open' : '' }}">
+                <a href="#" class="nav-link {{ request()->routeIs('admin.categories.*','admin.units.*','admin.items.*') ? 'active' : '' }}">
+                    <i class="nav-icon fas fa-boxes"></i>
+                    <p>
+                        Products
+                        <i class="right fas fa-angle-left"></i>
+                    </p>
+                </a>
+                <ul class="nav nav-treeview">
+                    <li class="nav-item">
+                        <a href="{{ route('admin.categories.index') }}" class="nav-link {{ request()->routeIs('admin.categories.*') ? 'active' : '' }}">
+                            <i class="far fa-circle nav-icon"></i>
+                            <p>Categories</p>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="{{ route('admin.units.index') }}" class="nav-link {{ request()->routeIs('admin.units.*') ? 'active' : '' }}">
+                            <i class="far fa-circle nav-icon"></i>
+                            <p>Units</p>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="{{ route('admin.items.index') }}" class="nav-link {{ request()->routeIs('admin.items.*') ? 'active' : '' }}">
+                            <i class="far fa-circle nav-icon"></i>
+                            <p>Items</p>
+                        </a>
+                    </li>
+                </ul>
+            </li>
 
-                <li class="nav-item">
-                    <a href="{{ route('admin.units.index') }}"
-                    class="nav-link {{ request()->routeIs('admin.units.*') ? 'active' : '' }}">
-                        <i class="nav-icon fas fa-balance-scale"></i>
-                        <p>Units</p>
-                    </a>
-                </li>
+            <!-- Clients & Sales Section -->
+            <li class="nav-item has-treeview {{ request()->routeIs('admin.clients.*','admin.sales.*','admin.returns.*') ? 'menu-open' : '' }}">
+                <a href="#" class="nav-link {{ request()->routeIs('admin.clients.*','admin.sales.*','admin.returns.*') ? 'active' : '' }}">
+                    <i class="nav-icon fas fa-shopping-bag"></i>
+                    <p>
+                        Transactions
+                        <i class="right fas fa-angle-left"></i>
+                    </p>
+                </a>
+                <ul class="nav nav-treeview">
+                    <li class="nav-item">
+                        <a href="{{ route('admin.clients.index') }}" class="nav-link {{ request()->routeIs('admin.clients.*') ? 'active' : '' }}">
+                            <i class="far fa-circle nav-icon"></i>
+                            <p>Clients</p>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="{{ route('admin.sales.index') }}" class="nav-link {{ request()->routeIs('admin.sales.*') ? 'active' : '' }}">
+                            <i class="far fa-circle nav-icon"></i>
+                            <p>Sales</p>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="{{ route('admin.returns.create') }}" class="nav-link {{ request()->routeIs('admin.returns.*') ? 'active' : '' }}">
+                            <i class="far fa-circle nav-icon"></i>
+                            <p>Returns</p>
+                        </a>
+                    </li>
+                </ul>
+            </li>
 
-                <li class="nav-item">
-                    <a href="{{ route('admin.items.index') }}"
-                    class="nav-link {{ request()->routeIs('admin.items.*') ? 'active' : '' }}">
-                        <i class="nav-icon fas fa-box-open"></i>
-                        <p>Items</p>
-                    </a>
-                </li>
+            <!-- Warehouses & Safe -->
+            <li class="nav-item has-treeview {{ request()->routeIs('admin.warehouses.*','admin.safes.*') ? 'menu-open' : '' }}">
+                <a href="#" class="nav-link {{ request()->routeIs('admin.warehouses.*','admin.safes.*') ? 'active' : '' }}">
+                    <i class="nav-icon fas fa-warehouse"></i>
+                    <p>
+                        Storage
+                        <i class="right fas fa-angle-left"></i>
+                    </p>
+                </a>
+                <ul class="nav nav-treeview">
+                    <li class="nav-item">
+                        <a href="{{ route('admin.warehouses.index') }}" class="nav-link {{ request()->routeIs('admin.warehouses.*') ? 'active' : '' }}">
+                            <i class="far fa-circle nav-icon"></i>
+                            <p>Warehouses</p>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="{{ route('admin.safes.index') }}" class="nav-link {{ request()->routeIs('admin.safes.*') ? 'active' : '' }}">
+                            <i class="far fa-circle nav-icon"></i>
+                            <p>Safe</p>
+                        </a>
+                    </li>
+                </ul>
+            </li>
 
-                <li class="nav-item">
-                    <a href="{{ route('admin.clients.index') }}"
-                    class="nav-link {{ request()->routeIs('admin.clients.*') ? 'active' : '' }}">
-                        <i class="nav-icon fas fa-user-friends"></i>
-                        <p>Clients</p>
-                    </a>
-                </li>
+            <!-- Settings -->
+            <li class="nav-item has-treeview {{ request()->routeIs('admin.settings.*') ? 'menu-open' : '' }}">
+                <a href="#" class="nav-link {{ request()->routeIs('admin.settings.*') ? 'active' : '' }}">
+                    <i class="nav-icon fas fa-cogs"></i>
+                    <p>
+                        Settings
+                        <i class="right fas fa-angle-left"></i>
+                    </p>
+                </a>
+                <ul class="nav nav-treeview">
+                    <li class="nav-item">
+                        <a href="{{ route('admin.settings.general.view') }}" class="nav-link {{ request()->routeIs('admin.settings.general.*') ? 'active' : '' }}">
+                            <i class="far fa-circle nav-icon"></i>
+                            <p>General</p>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="{{ route('admin.settings.advanced.view') }}" class="nav-link {{ request()->routeIs('admin.settings.advanced.*') ? 'active' : '' }}">
+                            <i class="far fa-circle nav-icon"></i>
+                            <p>Advanced</p>
+                        </a>
+                    </li>
+                </ul>
+            </li>
 
-                <li class="nav-item">
-                    <a href="{{ route('admin.sales.index') }}"
-                    class="nav-link {{ request()->routeIs('admin.sales.*') ? 'active' : '' }}">
-                        <i class="nav-icon fas fa-shopping-cart"></i>
-                        <p>Sales</p>
-                    </a>
-                </li>
+            <!-- Roles & Permissions -->
+            <li class="nav-item has-treeview {{ request()->routeIs('admin.roles.*','admin.permissions.*') ? 'menu-open' : '' }}">
+                <a href="#" class="nav-link {{ request()->routeIs('admin.roles.*','admin.permissions.*') ? 'active' : '' }}">
+                    <i class="nav-icon fas fa-user-shield"></i>
+                    <p>
+                        Access Control
+                        <i class="right fas fa-angle-left"></i>
+                    </p>
+                </a>
+                <ul class="nav nav-treeview">
+                    <li class="nav-item">
+                        <a href="{{ route('admin.roles.index') }}" class="nav-link {{ request()->routeIs('admin.roles.*') ? 'active' : '' }}">
+                            <i class="far fa-circle nav-icon"></i>
+                            <p>Roles</p>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="{{ route('admin.permissions.index') }}" class="nav-link {{ request()->routeIs('admin.permissions.*') ? 'active' : '' }}">
+                            <i class="far fa-circle nav-icon"></i>
+                            <p>Permissions</p>
+                        </a>
+                    </li>
+                </ul>
+            </li>
 
-                <li class="nav-item">
-                    <a href="{{ route('admin.returns.create') }}"
-                    class="nav-link {{ request()->routeIs('admin.returns.*') ? 'active' : '' }}">
-                        <i class="nav-icon fas fa-shopping-cart"></i>
-                        <p>Returns</p>
-                    </a>
-                </li>
+        </ul>
+</nav>
 
-                <li class="nav-item">
-                    <a href="{{ route('admin.warehouses.index') }}"
-                    class="nav-link {{ request()->routeIs('admin.warehouses.*') ? 'active' : '' }}">
-                        <i class="nav-icon fas fa-warehouse"></i>
-                        <p>Warehouses</p>
-                    </a>
-                </li>
-
-                <li class="nav-item">
-                    <a href="{{ route('admin.safes.index') }}"
-                    class="nav-link {{ request()->routeIs('admin.safes.*') ? 'active' : '' }}">
-                        <i class="nav-icon fas fa-money-bill"></i>
-                        <p>Safe</p>
-                    </a>
-                </li>
-
-                <li class="nav-item">
-                    <a href="{{ route('admin.settings.general.view') }}"
-                    class="nav-link {{ request()->routeIs('admin.settings.general.*') ? 'active' : '' }}">
-                        <i class="nav-icon fas fa-cog"></i>
-                        <p>Settings</p>
-                    </a>
-                </li>
-
-                <li class="nav-item">
-                    <a href="{{ route('admin.settings.advanced.view') }}"
-                    class="nav-link {{ request()->routeIs('admin.settings.advanced.*') ? 'active' : '' }}">
-                        <i class="nav-icon fas fa-tools"></i>
-                        <p>Advanced Settings</p>
-                    </a>
-                </li>
-
-                <li class="nav-item">
-                    <a href="{{ route('admin.roles.index') }}"
-                    class="nav-link {{ request()->routeIs('admin.roles.*') ? 'active' : '' }}">
-                        <i class="nav-icon fas fa-user-cog"></i>
-                        <p>Roles</p>
-                    </a>
-                </li>
-
-                <li class="nav-item">
-                    <a href="{{ route('admin.permissions.index') }}"
-                    class="nav-link {{ request()->routeIs('admin.permissions.*') ? 'active' : '' }}">
-                        <i class="nav-icon fas fa-key"></i>
-                        <p>Permissions</p>
-                    </a>
-                </li>
-            </ul>
-        </nav>
 
         <!-- /.sidebar-menu -->
     </div>

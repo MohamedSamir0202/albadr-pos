@@ -1,34 +1,35 @@
-@extends('layouts.admin')
-
-@section('title', 'إضافة دور')
-@section('page-title', 'إضافة دور جديد')
-
+@extends('admin.layouts.app', [
+    'pageName' => ('Create Role'),
+])
 @section('content')
-<div class="content-card p-6">
-    <form method="POST" action="{{ route('admin.roles.store') }}">
+<div class="container mt-4">
+
+    <h3>Create New Role</h3>
+
+    <form action="{{ route('admin.roles.store') }}" method="POST">
         @csrf
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <div>
-                <label class="block text-sm font-medium mb-1">اسم الدور</label>
-                <input name="name" class="form-input w-full" value="{{ old('name') }}" required />
-                @error('name')<p class="text-red-600 text-sm mt-1">{{ $message }}</p>@enderror
-            </div>
-            <div class="md:col-span-2">
-                <label class="block text-sm font-medium mb-2">الصلاحيات</label>
-                <div class="grid grid-cols-2 gap-4">
-                    @foreach($permissions as $permission)
-                        <label class="flex items-center space-x-2">
-                            <input type="checkbox" name="permissions[]" value="{{ $permission->id }}">
-                            <span>{{ $permission->name }}</span>
+
+        <div class="mb-3">
+            <label class="form-label">Role Name</label>
+            <input type="text" name="name" class="form-control" required>
+        </div>
+
+        <label class="form-label">Permissions</label>
+        <div class="row">
+            @foreach($permissions as $permission)
+                <div class="col-3">
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox"
+                               name="permissions[]" value="{{ $permission->id }}">
+                        <label class="form-check-label">
+                            {{ $permission->name }}
                         </label>
-                    @endforeach
+                    </div>
                 </div>
-            </div>
+            @endforeach
         </div>
-        <div class="mt-6 flex gap-3">
-            <button type="submit" class="btn btn-success">حفظ</button>
-            <a href="{{ route('admin.roles.index') }}" class="btn btn-secondary">إلغاء</a>
-        </div>
+
+        <button type="submit" class="btn btn-primary mt-3">Create Role</button>
     </form>
 </div>
 @endsection
