@@ -3,18 +3,18 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
-use Spatie\Permission\Traits\HasRoles;
+use App\Enums\SaleTypeEnum;
 use App\Enums\UserStatusEnum;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Spatie\Permission\Traits\HasRoles;
 
 class User extends Authenticatable
 {
     /** @use HasFactory<\Database\Factories\UserFactory> */
-    use HasFactory, Notifiable;
-    use HasRoles;
+    use HasFactory, Notifiable, HasRoles;
 
     /**
      * The attributes that are mass assignable.
@@ -55,6 +55,11 @@ class User extends Authenticatable
 
     public function sales(): User|HasMany
     {
-        return $this->hasMany(Sale::class);
+        return $this->hasMany(Sale::class)->where('type', SaleTypeEnum::sale->value);
+    }
+
+    public function returns(): User|HasMany
+    {
+        return $this->hasMany(Sale::class)->where('type', SaleTypeEnum::return->value);
     }
 }
