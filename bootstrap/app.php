@@ -14,6 +14,11 @@ return Application::configure(basePath: dirname(__DIR__))
     ->withMiddleware(function (Middleware $middleware): void {
         $middleware->redirectGuestsTo('/admin/login');
     })
+    ->withMiddleware(function (Middleware $middleware): void {
+        $middleware->priority([
+            \App\Http\Middleware\ApiJsonResponse::class,
+        ]);
+    })
     ->withExceptions(function (Exceptions $exceptions): void {
         //
     })->create();

@@ -85,4 +85,10 @@ class Item extends Model
     {
         return $this->hasMany('App\Models\WarehouseTransaction');
     }
+
+    public function cartItems()
+    {
+        return $this->hasMany(CartItem::class);
+    }
+
 }
