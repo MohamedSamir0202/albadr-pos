@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Enums\SaleTypeEnum;
 use Illuminate\Database\Eloquent\Model;
 
 class Sale extends Model
@@ -43,10 +44,24 @@ class Sale extends Model
         return $this->belongsTo('App\Models\Warehouse');
     }
 
+    public function warehouseTransactions()
+    {
+        return $this->morphMany('App\Models\WarehouseTransaction', 'reference');
+    }
     public function items()
     {
         return $this->morphToMany('App\Models\Item', 'itemable')
             ->withPivot('unit_price','quantity','total_price','notes');
+    }
+
+    public function isSale()
+    {
+        return $this->type === SaleTypeEnum::sale;
+    }
+
+    public function isReturn()
+    {
+        return $this->type === SaleTypeEnum::return;
     }
 
 }

@@ -5,29 +5,46 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Middleware\ApiJsonResponse;
 use App\Http\Controllers\Api\V1\AuthController;
 use App\Http\Controllers\Api\V1\ItemController;
-use App\Http\Controllers\Admin\api\v1\CartController;
-use App\Http\Controllers\Admin\api\v1\OrderController;
+use App\Http\Controllers\Api\V1\CartController;
+use App\Http\Controllers\Api\V1\OrderController;
 
-Route::get('/user', function (Request $request) {
-    return $request->user();
-})->middleware('auth:sanctum');
+Route::middleware(ApiJsonResponse::class)->prefix('v1')->group(function () {
 
-Route::group(['prefix' => 'v1', 'middleware' => ApiJsonResponse::class], function () {
-    Route::group(['prefix' => 'auth'], function () {
-        Route::post('login', [AuthController::class, 'login']);
+    // ======================
+    // Auth
+    // ======================
+    Route::prefix('auth')->group(function () {
+        Route::post('login',  [AuthController::class, 'login']);
         Route::post('signup', [AuthController::class, 'signup']);
-        Route::get('get-profile', [AuthController::class, 'getProfile'])->middleware('auth:api');
-        Route::post('update-profile', [AuthController::class, 'updateProfile'])->middleware('auth:api');
+
+        Route::middleware('auth:sanctum')->group(function () {
+            Route::get('profile',  [AuthController::class, 'getProfile']);
+            Route::post('profile', [AuthController::class, 'updateProfile']);
+        });
     });
 
-    Route::get('items', [ItemController::class, 'index']);
+    // ======================
+    // Items (Public)
+    // ======================
+    Route::get('items',      [ItemController::class, 'index']);
     Route::get('items/{id}', [ItemController::class, 'show']);
 
-    Route::get('/cart',        [CartController::class, 'index']);
-    Route::post('/cart/add',   [CartController::class, 'add']);
-    //Route::put('/cart/update', [CartController::class, 'update']);
-   // Route::delete('/cart/remove/{id}', [CartController::class, 'remove']);
-   //Route::post('/checkout',        [OrderController::class, 'checkout']);
-   //Route::get('/orders',           [OrderController::class, 'index']);
-   //Route::get('/orders/{order}',   [OrderController::class, 'show']);
+    // ======================
+    // Protected Routes
+    // ======================
+    Route::middleware('auth:sanctum')->group(function () {
+
+        // -------- Cart --------
+        Route::get('cart',            [CartController::class, 'index']);
+        Route::post('cart/add',           [CartController::class, 'add']);   // add item
+        Route::put('cart/{id}',     [CartController::class, 'update']);  // update qty
+        Route::delete('cart/{id}',  [CartController::class, 'destroy']); // remove item
+
+        // -------- Checkout & Orders --------
+        Route::post('checkout',       [OrderController::class, 'checkout']);
+
+        Route::get('orders',          [OrderController::class, 'index']);
+        Route::get('orders/{id}',  [OrderController::class, 'show']);
+    });
+
 });

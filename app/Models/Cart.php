@@ -7,12 +7,12 @@ use Illuminate\Database\Eloquent\Model;
 class Cart extends Model
 {
     protected $fillable = [
-        'user_id',
+        'client_id',
         'status'
     ];
 
     // cart belongs to user
-    public function clients()
+    public function client()
     {
         return $this->belongsTo(Client::class);
     }
@@ -22,5 +22,6 @@ class Cart extends Model
     {
         return $this->hasMany(CartItem::class);
     }
+
 }
 
