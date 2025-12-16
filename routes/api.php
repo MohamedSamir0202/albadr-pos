@@ -41,10 +41,9 @@ Route::middleware(ApiJsonResponse::class)->prefix('v1')->group(function () {
         Route::delete('cart/{id}',  [CartController::class, 'destroy']); // remove item
 
         // -------- Checkout & Orders --------
-        Route::post('checkout',       [OrderController::class, 'checkout']);
-
-        Route::get('orders',          [OrderController::class, 'index']);
-        Route::get('orders/{id}',  [OrderController::class, 'show']);
+    Route::post('/checkout', [OrderController::class, 'checkout'])->middleware('auth:api');
+    Route::get('/orders', [OrderController::class, 'index'])->middleware('auth:api');
+    Route::get('/orders/{order}', [OrderController::class, 'show'])->middleware('auth:api');
     });
 
 });
