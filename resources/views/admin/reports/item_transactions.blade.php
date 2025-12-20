@@ -1,71 +1,122 @@
 @extends('admin.layouts.app',[
-    'pageName'=> __('trans.trans.item_transactions'),
-    ])
+    'pageName'=> 'Item Transactions',
+])
+
 @section('content')
     <div class="row">
         <div class="col-sm-12">
+            <div class="card card-default">
+                <div class="card-header">
+                    <h3 class="card-title">Filter</h3>
+                </div>
+                <div class="card-body">
+                    <form action="{{ route('admin.reports.item_transactions') }}" method="GET">
+                        <div class="row">
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <label>Item</label>
+                                    <select name="item_id" class="form-control select2">
+                                        <option value="">All Items</option>
+                                        @foreach($items as $item)
+                                            <option value="{{ $item->id }}" {{ request('item_id') == $item->id ? 'selected' : '' }}>{{ $item->name }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <label>Client</label>
+                                    <select name="client_id" class="form-control select2">
+                                        <option value="">All Clients</option>
+                                        @foreach($clients as $client)
+                                            <option value="{{ $client->id }}" {{ request('client_id') == $client->id ? 'selected' : '' }}>{{ $client->name }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-md-2">
+                                <div class="form-group">
+                                    <label>From Date</label>
+                                    <input type="date" name="date_from" class="form-control" value="{{ request('date_from') }}">
+                                </div>
+                            </div>
+                            <div class="col-md-2">
+                                <div class="form-group">
+                                    <label>To Date</label>
+                                    <input type="date" name="date_to" class="form-control" value="{{ request('date_to') }}">
+                                </div>
+                            </div>
+                            <div class="col-md-2">
+                                <label>&nbsp;</label>
+                                <button type="submit" class="btn btn-primary btn-block">
+                                    <i class="fa fa-search"></i> Search
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
             <div class="card">
                 <div class="card-header">
-                    <h3 class="card-title">@lang('trans.item_transactions')</h3>
-                    <div class="card-tools">
-
-                    </div>
+                    <h3 class="card-title">Item Transactions</h3>
                 </div>
-                <!-- /.card-header -->
-                <div class="card-body">
+                <div class="card-body p-0">
                     @include('admin.layouts.partials._flash')
-                    <table class="table table-bordered">
-                        <thead>
+                    <table class="table table-hover table-striped table-bordered mb-0">
+                        <thead class="thead-light">
                         <tr>
-                            <th>@lang('trans.by')</th>
-                            <th>@lang('trans.current_quantity')</th>
-                            <th >@lang('trans.description')</th>
-                            <th>@lang('trans.price')</th>
-                            <th>@lang('trans.quantity')</th>
-                            <th>@lang('trans.created_at')</th>
-                            <th>@lang('trans.item_name')</th>
-
+                            <th>Created At</th>
+                            <th>Item Name</th>
+                            <th>Description</th>
+                            <th>Quantity</th>
+                            <th>Price</th>
+                            <th>Balance After</th>
+                            <th>By</th>
                         </tr>
                         </thead>
                         <tbody>
-                        @foreach($transactions as $transaction)
+                        @forelse($transactions as $transaction)
                             @foreach($transaction->items as $item)
                                 <tr>
-                                    <td>{{ $transaction->user->full_name }}</td>
-                                    <td>{{ $transaction->warehouseTransactions ? $transaction->warehouseTransactions->where('item_id', $item->id)->first()->quantity_after : "-"}}</td>
+                                    <td>{{ $transaction->created_at->format('Y-m-d H:i') }}</td>
+                                    <td><strong>{{ $item->name }}</strong></td>
                                     <td>
-                                        @if($transaction->isSale())
-                                            فاتورة بيع
-                                        @else
-                                            فاتورة مرتجع
-                                        @endif
-                                        - اسم العميل :
-                                        {{ $transaction->client->name }}
+                                        <span class="badge {{ $transaction->type == \App\Enums\SaleTypeEnum::sale->value ? 'badge-success' : 'badge-danger' }}">
+                                            {{ $transaction->type == \App\Enums\SaleTypeEnum::sale->value ? 'Sale Invoice' : 'Return Invoice' }}
+                                        </span>
+                                        <br>
+                                        <small>Client: {{ $transaction->client->name ?? '-' }}</small>
+                                        <br>
+                                        <small>Invoice No: {{ $transaction->invoice_number }}</small>
                                     </td>
-                                    <td>
-                                        {{ $item->pivot->total_price }}
+                                    <td class="text-center">{{ $item->pivot->quantity }}</td>
+                                    <td>{{ number_format($item->pivot->unit_price, 2) }}</td>
+                                    <td class="text-info font-weight-bold">
+                                        @php
+                                            $warehouseLog = $transaction->warehouseTransactions
+                                                            ->where('item_id', $item->id)
+                                                            ->first();
+                                        @endphp
+                                        {{ $warehouseLog ? $warehouseLog->quantity_after : "-" }}
                                     </td>
-                                    <td>
-                                        {{ $item->pivot->quantity }}
-                                    </td>
-                                    <td>
-                                        {{ $transaction->created_at->toDateTimeString() }}
-                                    </td>
-                                    <td>
-                                        {{ $item->name }}
-                                    </td>
+                                    <td>{{ $transaction->user->full_name ?? '-' }}</td>
                                 </tr>
                             @endforeach
-                        @endforeach
+                        @empty
+                            <tr>
+                                <td colspan="7" class="text-center">No data available</td>
+                            </tr>
+                        @endforelse
                         </tbody>
                     </table>
                 </div>
-                <!-- /.card-body -->
                 <div class="card-footer clearfix">
-                    {{ $transactions->links() }}
+                    <div class="float-right">
+                        {{ $transactions->links() }}
+                    </div>
                 </div>
             </div>
-            <!-- /.card -->
         </div>
     </div>
 @endsection

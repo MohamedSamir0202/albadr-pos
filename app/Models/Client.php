@@ -2,16 +2,20 @@
 
 namespace App\Models;
 
-use App\Enums\ClientRegistrationEnum;
 use App\Enums\ClientStatusEnum;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use App\Enums\ClientRegistrationEnum;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Notifications\Notifiable;
+//use Laravel\Sanctum\Contracts\HasApiTokens;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Foundation\Auth\User as Authenticatable;
+use Laravel\Sanctum\HasApiTokens;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
-class Client extends Model
+class Client extends Authenticatable
 {
-    use HasFactory;
+    use HasApiTokens, HasFactory, Notifiable;
 
     protected $table = 'clients';
     public $timestamps = true;
@@ -19,11 +23,15 @@ class Client extends Model
     use SoftDeletes;
 
     protected $dates = ['deleted_at'];
-    protected $fillable = array('name', 'email', 'phone', 'address', 'balance', 'status', 'registered_via');
+    protected $fillable = array('name', 'email', 'phone', 'address', 'balance',
+     'status', 'registered_via' , 'password');
 
     protected $casts = [
         'registered_via' => ClientRegistrationEnum::class,
         'status' => ClientStatusEnum::class,
+    ];
+    protected $hidden = [
+        'password',
     ];
 
     public function sales()

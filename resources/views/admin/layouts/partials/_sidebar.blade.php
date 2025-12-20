@@ -180,6 +180,12 @@
                     </li>
                 </ul>
             </li>
+            <li class="nav-item">
+                <a href="{{ route('admin.reports.item_transactions') }}" class="nav-link {{ request()->routeIs('admin.roles.*') ? 'active' : '' }}">
+                    <i class="far fa-circle nav-icon"></i>
+                    <p>Reports</p>
+                </a>
+            </li>
 
         </ul>
 </nav>

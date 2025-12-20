@@ -97,9 +97,7 @@
                                 <a href="{{ route('admin.sales.show', $sale->id) }}" class="btn btn-sm btn-info text-white">
                                     Show
                                 </a>
-                                <a href="{{ route('admin.sales.edit', $sale->id) }}" class="btn btn-sm btn-warning">
-                                    Print
-                                </a>
+                                
                                 <form action="{{ route('admin.sales.destroy', $sale->id) }}" method="POST" class="d-inline">
                                     @csrf @method('DELETE')
                                     <button type="submit" class="btn btn-sm btn-danger" onclick="return confirm('Delete this sale?')">

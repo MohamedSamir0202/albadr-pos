@@ -8,7 +8,7 @@ use Illuminate\Foundation\Http\FormRequest;
 
 class SaleRequest extends FormRequest
 {
-    
+
     public function authorize(): bool
     {
         return true;
@@ -25,7 +25,7 @@ class SaleRequest extends FormRequest
             'invoice_number' => ['required', 'unique:sales,invoice_number'],
             'safe_id' => ['required', 'exists:safes,id'],
             'warehouse_id' => ['required', 'exists:warehouses,id'],
-            'discount_type' => ['required'],
+            'discount_type' => ['required', 'integer'],
             'discount_value' => ['nullable', 'numeric'],
 
             'payment_type' => [

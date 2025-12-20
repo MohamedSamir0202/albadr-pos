@@ -8,7 +8,7 @@ return new class extends Migration {
 
     public function up(): void
     {
-        // Items
+        // 1. الربط لجدول المنتجات (Items)
         Schema::table('items', function(Blueprint $table) {
             $table->foreign('unit_id')->references('id')->on('units')
                 ->restrictOnDelete()
@@ -18,7 +18,7 @@ return new class extends Migration {
                 ->restrictOnUpdate();
         });
 
-        // Sales
+        // 2. الربط لجدول المبيعات (Sales)
         Schema::table('sales', function(Blueprint $table) {
             $table->foreign('client_id')->references('id')->on('clients')
                 ->restrictOnDelete()
@@ -28,7 +28,7 @@ return new class extends Migration {
                 ->restrictOnUpdate();
         });
 
-        // Orders
+        // 3. الربط لجدول الطلبات (Orders)
         Schema::table('orders', function(Blueprint $table) {
             $table->foreign('client_id')->references('id')->on('clients')
                 ->restrictOnDelete()
@@ -38,8 +38,8 @@ return new class extends Migration {
                 ->nullOnUpdate();
         });
 
-        // Order Items
-        Schema::table('order_items', function(Blueprint $table) {
+        // 4. الربط لجدول تفاصيل الطلبات (Item Orders)
+        Schema::table('item_orders', function(Blueprint $table) {
             $table->foreign('order_id')->references('id')->on('orders')
                 ->cascadeOnDelete();
             $table->foreign('item_id')->references('id')->on('items')
@@ -49,7 +49,8 @@ return new class extends Migration {
 
     public function down(): void
     {
-        Schema::table('order_items', function(Blueprint $table) {
+        // حذف القيود عند التراجع (Rollback)
+        Schema::table('item_orders', function(Blueprint $table) {
             $table->dropForeign(['order_id']);
             $table->dropForeign(['item_id']);
         });

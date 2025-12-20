@@ -9,8 +9,8 @@ return new class extends Migration {
     {
         Schema::create('orders', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('client_id')->constrained('clients')->restrictOnDelete();
-            $table->foreignId('sale_id')->nullable()->constrained('sales')->nullOnDelete();
+            $table->unsignedBigInteger('client_id');
+            $table->unsignedBigInteger('sale_id')->nullable();
             $table->string('status');
             $table->string('payment_method')->default('cash_on_delivery');
 

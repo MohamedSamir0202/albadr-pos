@@ -20,29 +20,31 @@ class AuthController extends Controller
     public function login(LoginRequest $request)
     {
         $client = Client::where('email', $request->email)->first();
+
         if (!$client || !Hash::check($request->password, $client->password)) {
-            return $this->apiErrorMessage("Invalid credentials", 401);
+            return $this->apiErrorMessage('Invalid credentials', 401);
         }
-//        if (!auth('api')->validate($request->validated())){
-//            return $this->apiErrorMessage("Invalid credentials", 401);
-//        }
-//        $client = Client::where('email', $request->email)->first();
-        $token = $client->createToken("api_token")->plainTextToken;
+
+        $token = $client->createToken('auth_token')->plainTextToken;
+
         return $this->responseApi([
             'token' => $token,
             'client' => new ClientResource($client)
-        ], "Client logged in successfully");
-
+        ], 'Client logged in successfully');
     }
+
 
     public function signup(SignupRequest $request)
     {
         $data = $request->validated();
-        $client = Client::create($data);
-        $client->password = bcrypt($data['password']);
-        $client->status = ClientStatusEnum::active->value;
-        $client->registered_via = ClientRegistrationEnum::app->value;
-        $client->save();
+        $client = Client::create([
+            'name' => $data['name'],
+            'email' => $data['email'],
+            'phone' => $data['phone'],
+            'password' => bcrypt($data['password']),
+            'status' => ClientStatusEnum::active->value,
+            'registered_via' => ClientRegistrationEnum::app->value,
+        ]);
 
         $token = $client->createToken("api_token")->plainTextToken;
         return $this->responseApi([

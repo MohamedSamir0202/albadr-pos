@@ -24,6 +24,7 @@ class CreateSalesTable extends Migration {
 			$table->string('invoice_number');
             $table->foreignIdFor(Warehouse::class, 'warehouse_id');
 			$table->tinyInteger('payment_type');
+            $table->date('sale_date');
 		});
 	}
 

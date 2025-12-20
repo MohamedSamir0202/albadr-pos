@@ -230,7 +230,8 @@
                                             <input class="form-check-input"
                                                    id="payment_type_cash"
                                                    type="radio" name="payment_type"
-                                                   value="{{ \App\Enums\PaymentTypeEnum::cash }}"
+                                                   value="{{ \App\Enums\PaymentTypeEnum::cash->value }}"
+
                                                    checked>
                                             <label class="form-check-label" for="payment_type_cash">
                                                 {{ \App\Enums\PaymentTypeEnum::cash->label() }}

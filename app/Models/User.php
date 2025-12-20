@@ -55,7 +55,8 @@ class User extends Authenticatable
 
     public function sales(): User|HasMany
     {
-        return $this->hasMany(Sale::class)->where('type', SaleTypeEnum::sale->value);
+        return $this->hasMany(Sale::class)
+        ->where('type', SaleTypeEnum::sale->value);
     }
 
     public function returns(): User|HasMany
